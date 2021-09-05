@@ -1,4 +1,4 @@
-import emitter from '../../Downloads/vue3-mindmap-main/src/mitt'
+import emitter from '@/mitt'
 import html2canvas from 'html2canvas'
 import { getDataId, getGTransform, getPath } from './attribute'
 import * as d3 from './d3'

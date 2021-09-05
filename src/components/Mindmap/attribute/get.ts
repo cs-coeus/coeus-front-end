@@ -1,4 +1,4 @@
-import { Mdata, TspanData, TwoNumber } from 'src/components/Mindmap/interface'
+import { Mdata, TspanData, TwoNumber } from '@/components/Mindmap/interface'
 import { getMultiline } from '../assistant'
 import style from '../css'
 import { addBtnSide, link, textRectPadding, sharpCorner, expandBtnRect, addBtnRect } from '../variable'

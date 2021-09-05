@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import emitter from '../../mitt'
+import emitter from '@/mitt'
 import { defineComponent, onMounted, PropType, watch, watchEffect } from 'vue'
 import { Data, TwoNumber } from './interface'
 import style from './css'
@@ -54,6 +54,7 @@ export default defineComponent({
       type: Array as PropType<Data[]>,
       required: true
     },
+    // 绘制所需的变量
     xGap: { type: Number, default: xGap },
     yGap: { type: Number, default: yGap },
     branch: {
@@ -66,6 +67,7 @@ export default defineComponent({
       default: scaleExtent
     },
     sharpCorner: Boolean,
+    // 操作许可
     centerBtn: Boolean,
     fitBtn: Boolean,
     downloadBtn: Boolean,
@@ -102,6 +104,7 @@ export default defineComponent({
       foreign?.raise()
       bindForeignDiv()
       fitView()
+      // mousedown与drag/zoom绑定的先后顺序会有影响
       svg?.on('mousedown', () => {
         const oldSele = document.getElementsByClassName(style.selected)[0]
         oldSele?.classList.remove(style.selected)

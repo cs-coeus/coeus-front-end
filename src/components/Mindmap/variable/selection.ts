@@ -1,4 +1,4 @@
-import emitter from '../../Downloads/vue3-mindmap-main/src/mitt'
+import emitter from '@/mitt'
 import * as d3 from '../d3'
 
 export let svg: d3.Selection<SVGSVGElement, null, null, null> | undefined
