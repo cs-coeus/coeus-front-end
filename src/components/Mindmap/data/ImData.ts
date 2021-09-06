@@ -1,6 +1,6 @@
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Scale from 'd3-scale'
-import { Data, Mdata, IsMdata } from 'src/components/Mindmap/interface'
+import { Data, Mdata, IsMdata } from '@/components/Mindmap/interface'
 import { BoundingBox, Layout } from './flextree'
 
 type GetSize = (text: string) => { width: number, height: number }

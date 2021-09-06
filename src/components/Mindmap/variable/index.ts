@@ -1,6 +1,6 @@
 import * as d3 from '../d3'
 import { Mdata, TwoNumber } from '../interface'
-import emitter from '../../Downloads/vue3-mindmap-main/src/mitt'
+import emitter from '@/mitt'
 import { Ref, ref, SetupContext } from 'vue'
 import { onDragEnd, onDragMove, onZoomMove } from '../listener'
 import * as selection from './selection'

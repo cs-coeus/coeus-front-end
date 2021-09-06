@@ -1,4 +1,4 @@
-# mind-map-v-frontend
+# Mind map editor based on vue3-mindmap 
 
 ## Project setup
 ```

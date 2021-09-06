@@ -1,4 +1,4 @@
-import { TspanData, Mdata, SelectionG } from 'src/components/Mindmap/interface'
+import { TspanData, Mdata, SelectionG } from '@/components/Mindmap/interface'
 import * as d3 from '../d3'
 import { attrA, attrAddBtnRect, attrExpandBtnCircle, attrExpandBtnRect, attrG, attrPath, attrText, attrTspan, getSiblingGClass, getTspanData } from '../attribute'
 import { getAddPath, makeTransition } from '../assistant'

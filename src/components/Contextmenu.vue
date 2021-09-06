@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, useCssModule, PropType, ref, Ref, nextTick, reactive } from 'vue'
-import emitter from '../../Downloads/vue3-mindmap-main/src/mitt'
+import emitter from '@/mitt'
 import { MenuItem } from './Mindmap/variable/contextmenu'
 
 export default defineComponent({

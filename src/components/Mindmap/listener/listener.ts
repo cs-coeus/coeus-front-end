@@ -5,7 +5,7 @@ import { Mdata } from '../interface'
 import { fitView, getRelativePos, getSelectedGData, isData, moveNode, moveView, scaleView, selectGNode } from '../assistant'
 import { add, addParent, addSibling, changeLeft, collapse, del, delOne, expand, mmdata, moveChild, moveSibling, rename } from '../data'
 import { svgEle, gEle, foreignDivEle, wrapperEle, foreignEle } from '../variable/element'
-import emitter from '../../Downloads/vue3-mindmap-main/src/mitt'
+import emitter from '@/mitt'
 import { getDataId, getSiblingGClass } from '../attribute'
 import { MenuEvent } from '../variable/contextmenu'
 

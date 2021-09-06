@@ -1,4 +1,4 @@
-import emitter from '../../../mitt'
+import emitter from '@/mitt'
 import cloneDeep from 'lodash.clonedeep'
 import { draw } from '../draw'
 import { Data, IsMdata } from '../interface'
