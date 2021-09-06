@@ -80,7 +80,7 @@ export default {
     loadExample(name) {
       this.showMap = false;
       axios
-        .get('/'+name)
+        .get(name)
         .then(response => (this.info = JSON.stringify(response.data, 2, ' ')))
     }
   }
