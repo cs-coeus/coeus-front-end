@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import stringHash from 'string-hash'
+import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +11,7 @@ export default defineConfig({
     ]
   },
   plugins: [vue()],
-  base: '/vue3-mindmap/',
+  base: '/mind-map-viewer-frontend/',
   build: {
     outDir: 'docs'
   },
