@@ -22,7 +22,8 @@
     "serve": "vite preview",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "release": "standard-version"
+    "release": "standard-version",
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "array-to-tree": "^3.3.2",
