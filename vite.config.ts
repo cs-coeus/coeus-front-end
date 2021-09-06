@@ -12,9 +12,6 @@ export default defineConfig({
   },
   plugins: [vue()],
   base: '/vue3-mindmap/',
-  build: {
-    outDir: 'docs'
-  },
   css: {
     modules: {
       generateScopedName: (name, filename, css) => {
