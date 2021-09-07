@@ -11,7 +11,7 @@ export default defineConfig({
     ]
   },
   plugins: [vue()],
-  base: '/vue3-mindmap/',
+  base: '/mind-map-viewer-frontend/',
   css: {
     modules: {
       generateScopedName: (name, filename, css) => {
