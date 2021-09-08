@@ -36,20 +36,25 @@ export default {
         this.showMap = false;
 
         //JSONifiction
-        let list = JSON.parse(this.info)
+        let list = JSON.parse(this.info.toString())
         //check if contain edges and nodes keys
         if("edges" in list && "nodes" in list) {
-          //correct assign parentId
-          var leftright = 0;
-          for (var i = 0; i <= list.edges.length; i++) {
+          //merge edges and nodes
+          let merged = [];
+          for(let i=0; i<list.nodes.length; i++) {
             list.nodes[i].name = list.nodes[i]['text'];
-            if (i !== list.edges.length) {
-              list.nodes[list.edges[i].childId - 1].parentId = list.edges[i].parentId;
-              if (list.nodes[i].parentId === 1 && ++leftright % 2 === 0) list.nodes[i].left = true;
-            }
+            merged.push({
+              ...list.nodes[i],
+              ...(list.edges.find((itmInner) => itmInner.childId === list.nodes[i].id))},
+            );
+          }
+          //check if left or right side of root
+          let leftright = 0;
+          for(let i=0; i<merged.length; i++) {
+            merged[i].left = (merged[i].parentId === 1 && ++leftright % 2 === 0);
           }
           //convert array version to tree
-          let tree = arrayToTree(list['nodes'], {
+          let tree = arrayToTree(merged, {
             parentProperty: 'parentId',
             customID: 'id'
           });
