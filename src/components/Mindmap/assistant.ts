@@ -42,8 +42,9 @@ export const getMultiline = (str: string): string[] => {
 }
 
 export const convertToImg = (svgdiv: HTMLDivElement, name: string): void => {
-  html2canvas(svgdiv).then((canvas) => {
-    const dataUrl = canvas.toDataURL()
+  html2canvas(svgdiv, { scale: 2 }).then((canvas) => {
+
+    const dataUrl = canvas.toDataURL('image/png')
     const window = open()
     if (window) {
       window.document.write(`<img src='${dataUrl}'>`)
