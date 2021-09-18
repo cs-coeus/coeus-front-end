@@ -3,8 +3,10 @@
     <div class="source" v-if="!showMap">
       <textarea v-model="info" rows="50" cols="200" data-gramm="false" data-gramm_editor="false"></textarea>
     </div>
+    <read-file @load="info = $event" v-if="!showMap"></read-file>
     <button @click.prevent="loadExample('example.json')">Load Example 1</button>
     <button @click.prevent="loadExample('example2.json')">Load Example 2</button>
+    <br>
     <button @click.prevent="format" v-if="!showMap">Generate mind map</button>
     <div v-if="showMap">
       <MapEditor :tree="formatted"/>
@@ -16,11 +18,13 @@
 import axios from "axios";
 import MapEditor from "@/components/MapEditor.vue";
 import arrayToTree from 'array-to-tree';
+import ReadFile from '@/components/ReadFile.vue';
 
 
 export default {
   name: 'App',
   components: {
+    ReadFile,
     MapEditor
   },
   data() {
