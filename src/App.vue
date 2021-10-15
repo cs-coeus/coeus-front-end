@@ -1,44 +1,125 @@
 <template>
   <div id="app">
-    <div class="source" v-if="!showMap">
-      <textarea v-model="info" rows="50" cols="200" data-gramm="false" data-gramm_editor="false"></textarea>
+    <TopNavbar :isHome="isHome" @go-home="goHome"></TopNavbar>
+    <div v-if="isHome">
+      <dialog-window :show='!!error' title='error' @close='handleError'>
+        <p>{{error}}</p>
+      </dialog-window>
+      <dialog-window fixed :show='isLoading' title='Generating mind map...'>
+        <LoadingSpinner v-if="isLoading"></LoadingSpinner>
+      </dialog-window>
+      <generate-form-top @generate-map="generateMap"></generate-form-top>
+      <div class="clearfix"></div>
+      <div class="containers">
+        <services-and-public-api-section></services-and-public-api-section>
+        <how-it-works-section></how-it-works-section>
+        <div class="clearfix"></div>
+        <about-us-section></about-us-section>
+      </div>
     </div>
-    <read-file @load="info = $event" v-if="!showMap"></read-file>
-    <button @click.prevent="loadExample('example.json')">Load Example 1</button>
-    <button @click.prevent="loadExample('example2.json')">Load Example 2</button>
-    <br>
-    <button @click.prevent="format" v-if="!showMap">Generate mind map</button>
-    <div v-if="showMap">
-      <MapEditor :tree="formatted"/>
+    <div v-if="!isHome">
+      <MapEditor :tree="formatted" v-if="!isHome"/>
+      <map-editor-bottom v-if="!isHome" @generate-map="generateMap"></map-editor-bottom>
     </div>
+    <div class="clearfix"></div>
+    <page-footer></page-footer>
   </div>
 </template>
-
 <script>
-import axios from "axios";
-import MapEditor from "@/components/MapEditor.vue";
+import PageFooter from '@/components/PageComponents/PageFooter.vue';
+import MapEditor from "@/components/PageComponents/MapEditorComponents/MapEditor.vue";
+import MapEditorBottom from '@/components/PageComponents/MapEditorComponents/MapEditorBottom.vue';
 import arrayToTree from 'array-to-tree';
-import ReadFile from '@/components/ReadFile.vue';
-
-
+import TopNavbar from '@/components/PageComponents/TopNavbar.vue';
+import GenerateFormTop from '@/components/PageComponents/LandingPageComponents/GenerateFormTop.vue';
+import ServicesAndPublicApiSection from '@/components/PageComponents/LandingPageComponents/ServicesAndPublicApiSection.vue';
+import HowItWorksSection from '@/components/PageComponents/LandingPageComponents/HowItWorksSection.vue';
+import AboutUsSection from '@/components/PageComponents/LandingPageComponents/AboutUsSection.vue';
+import LoadingSpinner from '@/components/PageComponents/UI/LoadingSpinner.vue';
+import DialogWindow from '@/components/PageComponents/UI/DialogWindow.vue';
 export default {
   name: 'App',
   components: {
-    ReadFile,
+    DialogWindow,
+    LoadingSpinner,
+    AboutUsSection,
+    HowItWorksSection,
+    ServicesAndPublicApiSection,
+    GenerateFormTop,
+    TopNavbar,
+    MapEditorBottom,
+    PageFooter,
     MapEditor
   },
   data() {
     return {
-      showMap: false,
+      isHome: true,
       info: "{}",
       formatted: [],
+      error: null,
+      isLoading: false,
     }
   },
   methods: {
+    goHome() {
+      this.isHome = true;
+    },
+    async generateMap(event) {
+      this.isHome = true;
+      this.isLoading = true;
+      try {
+        await this.requestData(event);
+      } catch (err) {
+        this.error = err.message || 'failed to generate mind map';
+      }
+      this.isLoading = false;
+    },
+    async requestData(event) {
+
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSSBBTSBBVVRIRU5USUNBVEVEISBzdGZnQXM4S3VDMmZOUVJ1ckhkVmFjQUFjTW1VQXJRcSJ9._ft_CMR27CE8ySY55KiH34uWnFJmdaLoCH8XYBFqWmQ';
+      let url = null;
+      let body = null;
+      //temporary read file for testing; in future send whole file to server
+      if(event.fileList.length > 0) {
+        url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/unstructured';
+        body = {
+          "topic": event.url,
+          "text": "In the summer of 2017, the Toelupe family heard about a little blue house in Provo, Utah, ..."
+        };
+      } else {
+        //check if it is an URL or just text
+        let wiki_path = event.url;
+        if(event.url.includes('https://')) {
+          wiki_path = event.url.split('/').slice(-1)[0];
+        }
+
+        url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/semi-structured';
+        body = {
+          'wiki_path': wiki_path,
+        };
+      }
+
+      let response = await fetch(url,{
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer '  + token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || 'failed to fetch');
+      } else {
+        this.info = JSON.stringify(responseData.result);
+        this.format();
+      }
+
+    },
     format() {
       if(this.info!=="") {
-        this.showMap = false;
-
         //JSONifiction
         let list = JSON.parse(this.info.toString())
         //check if contain edges and nodes keys
@@ -68,8 +149,10 @@ export default {
           tree = this.removeProp(tree, "parentId")
 
           this.formatted = JSON.parse(JSON.stringify(tree));
-          this.showMap = true;
+          this.isHome = false;
         }
+      } else {
+        throw new Error('There was some error');
       }
     },
     removeProp(obj, propToDelete) {
@@ -86,45 +169,62 @@ export default {
       }
       return obj
     },
-    loadExample(name) {
-      this.showMap = false;
-      axios
-        .get(name)
-        .then(response => (this.info = JSON.stringify(response.data, 2, ' ')))
+    handleError() {
+      this.error = null;
     }
   }
-
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-
+* {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+  font-family: Helvetica;
 }
 
-.editor {
-  width: 20%;
-  float: left;
-  display:inline;
+.blueBg {
+  background: rgba(235,246,255,1);
 }
-.diagram {
-  float: left;
-  width: 80%;
-  height:900px;
-  display:inline;
+
+.pl {
+  padding-left: 16%;
 }
-.bottom {
-  padding-top: 200px;
-  top:200px;
+.pr0 {
+  padding-right: 10%;
 }
-.editor textarea {
-  width: 100%;
-  max-width: 100%;
-  height: 800px;
+.pr {
+  padding-right: 16%;
+}
+.pr2 {
+  padding-right: 20%;
+}
+.pt1 {
+  padding-top: 10%;
+}
+.pt2 {
+  padding-top: 20%;
+}
+h1 {
+  font-weight: Bold;
+  font-size: 60px;
+  opacity: 1;
+}
+p {
+  font-size: 18px;
+}
+
+.containers {
+  width: 90%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 </style>

@@ -21,5 +21,6 @@ export default defineConfig({
         return `${file}_${name}_${hash}`
       }
     }
-  }
+  },
+
 })
