@@ -91,8 +91,6 @@ h1 {
   overflow: hidden;
 }
 
-
-
 @media only screen and (max-width: 798px) {
   .col {
     width: 100%;
