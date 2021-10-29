@@ -89,8 +89,8 @@ export default {
       } else {
         //check if it is an URL or just text
         let wiki_path = event.url;
-        if(event.url.includes('https://')) {
-          wiki_path = event.url.split('/').slice(-1)[0];
+        if(event.url.includes('wikipedia.org/')) {
+            wiki_path = event.url.split('/').slice(-1)[0];
         }
 
         url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/semi-structured';
