@@ -10,10 +10,18 @@
                class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf, .doc, .docx, .txt"  style="display: none"/>
         <div v-if="!isDragged">
           <div class="v2_39"></div>
-          <span class="v2_40">Wikipedia URL</span>
+          <span class="v2_40" v-if="filelist.length === 0">Wikipedia URL</span>
+          <span class="v2_40" v-else>Topic</span>
           <div class="v2_41"></div>
-          <input class="v2_42" type="text" placeholder="E.g. https://en.wikipedia.org/wiki/Coeus" v-model="url">
-          <span class="v2_45">or drag a file here or <span class="underline" @click="chooseFiles()">click here</span> (.pdf, .doc, .docx, .txt)</span>
+          <input class="v2_42" type="text" placeholder="E.g. https://en.wikipedia.org/wiki/Coeus" v-model="url" v-if="filelist.length === 0">
+          <input class="v2_42" type="text" placeholder="E.g. Eukaryote" v-model="url" v-else>
+          <span class="v2_45" v-if="filelist.length === 0">
+            or drag a file here or <span class="underline" @click="chooseFiles()">click here</span> (.pdf, .doc, .docx, .txt)
+          </span>
+          <span class="v2_45" v-else>
+            {{filelist[0].name}}
+             <span class="underline" @click="removeFile()">Remove</span>
+          </span>
           <button class="generatebtn" @click="generateMap">Generate</button>
         </div>
         <div v-else>
@@ -37,6 +45,9 @@ export default {
     }
   },
   methods: {
+    removeFile() {
+      this.filelist.splice(0);
+    },
     chooseFiles() {
       document.getElementById("assetsFieldHandle").click()
     },

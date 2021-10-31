@@ -75,37 +75,44 @@ export default {
       this.isLoading = false;
     },
     async requestData(event) {
-
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSSBBTSBBVVRIRU5USUNBVEVEISBzdGZnQXM4S3VDMmZOUVJ1ckhkVmFjQUFjTW1VQXJRcSJ9._ft_CMR27CE8ySY55KiH34uWnFJmdaLoCH8XYBFqWmQ';
       let url = null;
       let body = null;
-      //temporary read file for testing; in future send whole file to server
+      let header = {
+        'Authorization': 'Bearer '  + token,
+      };
+
       if(event.fileList.length > 0) {
-        url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/unstructured';
-        body = {
-          "topic": event.url,
-          "text": "In the summer of 2017, the Toelupe family heard about a little blue house in Provo, Utah, ..."
-        };
+        //setting for sending unstructured type
+        if(event.url === '') {
+          throw new Error('Topic cannot be empty');
+        }
+
+        url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/unstructured/file';
+        body = new FormData();
+        body.append('topic', event.url);
+        body.append('file', event.fileList[0]);
       } else {
-        //check if it is an URL or just text
+        //setting for sending semi-structured type
+        if(event.url === '') {
+          throw new Error('Wikipedia URL cannot be empty');
+        }
+
         let wiki_path = event.url;
         if(event.url.includes('wikipedia.org/')) {
             wiki_path = event.url.split('/').slice(-1)[0];
         }
-
         url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/semi-structured';
-        body = {
+        header['Content-Type'] = 'application/json';
+        body = JSON.stringify({
           'wiki_path': wiki_path,
-        };
+        });
       }
 
       let response = await fetch(url,{
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer '  + token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+        headers: header,
+        body: body,
       });
 
       const responseData = await response.json();
