@@ -52,7 +52,7 @@ export default {
   margin-right: 2%;
 }
 
-@media only screen and (max-width: 798px) {
+@media only screen and (max-width: 900px) {
   .left {
     width: 100%;
     display: none;

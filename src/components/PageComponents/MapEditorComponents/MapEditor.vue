@@ -164,7 +164,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-@media only screen and (max-width: 798px) {
+@media only screen and (max-width: 900px) {
   .inline {
     width: 50%;
     padding-top:20px;

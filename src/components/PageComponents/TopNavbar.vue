@@ -1,5 +1,5 @@
 <template>
-  <section class="navigation">
+  <section :class="['navigation', {'scrolled': isScrolled }]">
     <div class="nav-container">
       <div class="brand">
         <a @click="home">COEUS</a>
@@ -36,7 +36,14 @@ export default {
   data() {
     return {
       burger: false,
+      isScrolled: false,
     }
+  },
+  created () {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     home() {
@@ -44,6 +51,9 @@ export default {
     },
     toggleBurger() {
       this.burger = !this.burger;
+    },
+    handleScroll (event) {
+      this.isScrolled  = (window.scrollY > 0)
     }
   }
 }
@@ -51,14 +61,19 @@ export default {
 
 <style scoped lang="scss">
 $content-width: 100vw;
-$breakpoint: 799px;
+$breakpoint: 900px;
 $nav-height: 70px;
 $nav-background: rgba(235,246,255,1);
 $nav-font-color: rgba(0,0,0,1);
 
+  .scrolled {
+    background-color: $nav-background;
+    height: 80px!important;
+  }
   .public {
     border: 4px solid rgba(22,135,167,1);
     border-radius:60px;
+    z-index: 1;
   }
 
    .navigation {
@@ -150,7 +165,7 @@ a {
      display: inline;
      background-color: $nav-background;
    }
-@media only screen and (max-width: 798px) {
+@media only screen and (max-width: 900px) {
 
 .nav-mobile {
   display: block;
@@ -180,8 +195,7 @@ a {
 }
 @media screen and (min-width: $breakpoint) {
   .nav-list {
-    display: block !important;
-
+    display: block;
   }
 }
 #nav-toggle {
