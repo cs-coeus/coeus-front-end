@@ -160,7 +160,7 @@ body {
   border: 1px;
 }
 
-@media only screen and (max-width: 798px) {
+@media only screen and (max-width: 900px) {
   .generatebtn {
     top: 55%!important;
     margin-left:  -0!important;

@@ -5,7 +5,7 @@
         any text and files</h1>
       <p class="pl pr2">With neural network, keywords are extracted
         and organized into mind map with ease.</p>
-      <div class="v2_44"  @dragover="dragover" @dragleave="dragleave" @drop="drop">
+      <div class="form"  @dragover="dragover" @dragleave="dragleave" @drop="drop">
         <input type="file" name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
                class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf, .doc, .docx, .txt"  style="display: none"/>
         <div v-if="!isDragged">
@@ -30,7 +30,13 @@
         </div>
       </div>
     </div>
-    <div class="right pt2 short"><img src="../../../assets/images/v2_47.png"></div>
+    <div class="right short blueBg">
+      <svg width="645" height="979" viewBox="0 0 645 979" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg">
+        <path d="M0.999808 391C-3.69497 216.525 138.927 126.78 333.5 0H646C646 0 995 960.5 646 975C297 989.5 21.4999 957.5 21.4999 871C21.4999 784.5 282.423 714.859 208 632C120.619 573.896 7.80551 532.148 0.999808 391Z" fill="white"/>
+      </svg>
+      <div class="bgWhite"></div>
+      <img src="../../../assets/images/v2_47.png" class="imageTopRight"/>
+    </div>
 </template>
 
 <script>
@@ -95,7 +101,7 @@ body {
 }
 .left {
   width: 50%;
-  height: 100%;
+  height: 100vh;
   top:0;
   float: left;
 }
@@ -105,11 +111,48 @@ body {
   top:0;
   float:right;
 }
-.right img {
-  max-height:528px;
+
+.svg {
+  position: relative;
+  z-index:2;
 }
 
-@media only screen and (max-width: 798px) {
+.imageTopRight {
+  top:320px;
+  right: 15%;
+  z-index:3;
+  position: absolute;
+  height: auto;
+  width:30%;
+  max-height: 535px;
+}
+
+.form {
+  position:relative;
+  top:60px;
+  left: 100px;
+}
+
+.bgWhite {
+  background: white;
+  width: 20%;
+  height: 102%;
+  z-index:0;
+  position: absolute;
+  left:80%;
+  top:0;
+}
+
+@media only screen and (max-width: 900px) {
+  .bgWhite {
+    display: none;
+  }
+  .svg {
+    display: none!important;
+  }
+  .imageTopRight {
+    display: none!important;
+  }
   .short {
     height: 30vh;
   }
@@ -144,15 +187,6 @@ body {
   }
 }
 
-.v2_44 {
-  margin-top: 20%;
-  height: 141px;
-  opacity: 1;
-  position: relative;
-  top: 30%;
-  left: 13%;
-  margin-bottom: 10%;
-}
 .v2_39 {
   width: 80%;
   height: 141px;

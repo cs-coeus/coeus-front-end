@@ -4,16 +4,23 @@
     <p>How your text transform into mind map</p>
     <div class="steps">
       <div class="v13_24"></div>
+      <svg width="255" height="93" viewBox="0 0 255 93" fill="none" xmlns="http://www.w3.org/2000/svg" class="shape1">
+        <path d="M1.2318 8.43444C107.261 -29.3526 143.774 109.863 254.232 89.4344" stroke="black" stroke-width="3" stroke-dasharray="10 10"/>
+      </svg>
       <div class="box step1">
         <h3>Step 1</h3>
         <p>Extract text from a file or a Wikipedia article.</p>
       </div>
-
+      <svg width="167" height="312" viewBox="0 0 167 312" fill="none" xmlns="http://www.w3.org/2000/svg" class="shape2">
+        <path d="M1.00001 1.54121C318.387 12.6521 77.4255 202.17 85 311.541" stroke="black" stroke-width="3" stroke-dasharray="10 10"/>
+      </svg>
       <div class="box step2">
         <h3>Step 2</h3>
         <p>Feed raw text data to model for analyze the structure and important keywords.</p>
       </div>
-
+      <svg width="330" height="89" viewBox="0 0 330 89" fill="none" xmlns="http://www.w3.org/2000/svg" class="shape3">
+        <path d="M329.312 16.4669C171.944 -41.7012 122.5 94 0.312098 86.4669" stroke="black" stroke-width="3" stroke-dasharray="10 10"/>
+      </svg>
       <div class="box step3">
         <h3>Step 3</h3>
         <p>Convert results from model into data structure applicable for mind map visualization.</p>
@@ -36,6 +43,30 @@ export default {
 
 <style scoped>
 
+.shape1 {
+  position: absolute;
+  left: 310px;
+  z-index: 9;
+  width: 820px;
+  height: 300px;
+  padding-top: 120px;
+}
+
+.shape2 {
+  position: absolute;
+  left: 810px;
+  z-index: 9;
+  width: 740px;
+  height: 500px;
+}
+
+.shape3 {
+  position: absolute;
+  left: 530px;
+  z-index: 9;
+  width: 650px;
+  height: 350px;
+}
  h1 {
    text-align: center;
  }
@@ -82,25 +113,25 @@ export default {
 
  .step2 {
    top:-90px;
-   left: 50%;
+   left: 52%;
    z-index: 10;
  }
 
  .step3 {
-   top:-10px;
+   top:30px;
    left: 65%;
    z-index: 10;
  }
 
  .step4 {
-   top: -220px;
-   left: 10%;
+   top: -150px;
+   left: 9%;
    z-index: 10;
  }
 
  .steps{
-   margin-top: -35%;
-   margin-bottom: -45%;
+   margin-top: -30%;
+   margin-bottom: -30%;
  }
 
  .v13_24 {
@@ -120,11 +151,14 @@ export default {
    background-size: cover;
    opacity: 1;
    position: relative;
-   top: -820px;
+   top: -880px;
    left: 61%;
  }
 
- @media only screen and (max-width: 798px) {
+ @media only screen and (max-width: 900px) {
+   .shape1,.shape2,.shape3 {
+     display: none!important;
+   }
    .step1,.step2,.step3, .step4 {
      top:2%;
      left:0;
