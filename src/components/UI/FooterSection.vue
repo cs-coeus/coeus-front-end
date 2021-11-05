@@ -43,6 +43,8 @@ export default {
 @media only screen and (max-width: 986px) {
   .footer-wrapper {
     flex-flow: column;
+    margin: 64px -48px 0;
+    padding: 32px -48px;
   }
 
   .footer-wrapper .right-container {

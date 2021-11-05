@@ -25,7 +25,7 @@
 		:class="{ 'toggle-background': scrollYPosition ?? 0 > 0 }"
 	>
 		<div class="left-container">
-			<li class="navigation-item logo">COEUS</li>
+			<li class="navigation-item logo" @click="$emit('go-home')" >COEUS</li>
 		</div>
 		<div class="right-container">
 			<hamburger-menu />

@@ -53,9 +53,8 @@
   </div>
 </template>
 
-<script>
-
-
+<script lang="ts">
+import { ref } from 'vue';
 import HeroImage from "../../assets/images/HeroImage.svg";
 import PrimaryButton from '@/components/UI/PrimaryButton.vue';
 import LinkButton from '@/components/UI/LinkButton.vue';
@@ -67,31 +66,38 @@ export default {
     PrimaryButton,
   },
   delimiters: ['${', '}'],
-  setup() {
+  emits: ['generate-map'],
+  setup(__,{emit}) {
+    const url = ref('');
+    const filelist = ref([]);
+    const isDragged = ref(false);
+
+    function removeFile() {
+      filelist.value.splice(0);
+    }
+
+    function chooseFiles() {
+      document.getElementById("assetsFieldHandle").click()
+    }
+
+    function generateMap() {
+      emit('generate-map', {
+        'url':url.value,
+        'fileList': filelist.value,
+      });
+    }
+
     return {
       HeroImage,
+      url,
+      filelist,
+      isDragged,
+      removeFile,
+      chooseFiles,
+      generateMap,
     };
   },
-  data() {
-    return {
-      url: '',
-      filelist: [],
-      isDragged: false,
-    }
-  },
   methods: {
-    removeFile() {
-      this.filelist.splice(0);
-    },
-    chooseFiles() {
-      document.getElementById("assetsFieldHandle").click()
-    },
-    generateMap() {
-      this.$emit('generate-map', {
-        'url':this.url,
-        'fileList': this.filelist,
-      });
-    },
     onChange() {
       this.filelist = [...this.$refs.file.files];
     },
@@ -202,6 +208,8 @@ export default {
   .hero-wrapper {
     flex-flow: column-reverse;
     justify-content: start;
+    margin: 0 -48px;
+    padding: 96px 48px 0;
   }
 
   .shape {
