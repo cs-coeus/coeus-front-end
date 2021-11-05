@@ -30,4 +30,10 @@ export default {
   color: var(--primary-color);
   margin-bottom: 16px;
 }
+
+@media only screen and (max-width: 986px) {
+  .card {
+    width:100%;
+  }
+}
 </style>

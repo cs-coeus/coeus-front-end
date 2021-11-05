@@ -202,6 +202,8 @@ export default {
   .hero-wrapper {
     flex-flow: column-reverse;
     justify-content: start;
+    margin: 0 -48px;
+    padding: 96px 48px 0;
   }
 
   .shape {

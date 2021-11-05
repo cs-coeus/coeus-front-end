@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <dialog-window :show='!!error' title='error' @close='handleError'>
+
+    <dialog-window :show='!!error' title='ERROR' @close='handleError'>
       <p>{{error}}</p>
     </dialog-window>
     <dialog-window fixed :show='isLoading' title='Generating mind map...'>
       <LoadingSpinner v-if="isLoading"></LoadingSpinner>
     </dialog-window>
+
     <nav-bar :isHome="isHome" @go-home="goHome"/>
     <div v-if="isHome">
 
@@ -194,55 +196,3 @@ export default {
   }
 }
 </style>
-<!--<style>-->
-<!--* {-->
-<!--  box-sizing: border-box;-->
-<!--}-->
-<!--body {-->
-<!--  font-size: 14px;-->
-<!--  font-family: Helvetica;-->
-<!--}-->
-
-<!--.blueBg {-->
-<!--  background: rgba(235,246,255,1);-->
-<!--}-->
-
-<!--.pl {-->
-<!--  padding-left: 16%;-->
-<!--}-->
-<!--.pr0 {-->
-<!--  padding-right: 10%;-->
-<!--}-->
-<!--.pr {-->
-<!--  padding-right: 16%;-->
-<!--}-->
-<!--.pr2 {-->
-<!--  padding-right: 20%;-->
-<!--}-->
-<!--.pt1 {-->
-<!--  padding-top: 10%;-->
-<!--}-->
-<!--.pt2 {-->
-<!--  padding-top: 20%;-->
-<!--}-->
-<!--h1 {-->
-<!--  font-weight: Bold;-->
-<!--  font-size: 60px;-->
-<!--  opacity: 1;-->
-<!--}-->
-<!--p {-->
-<!--  font-size: 18px;-->
-<!--}-->
-
-<!--.containers {-->
-<!--  width: 90%;-->
-<!--  margin-right: 5%;-->
-<!--  margin-left: 5%;-->
-<!--}-->
-
-<!--.clearfix::after {-->
-<!--  content: "";-->
-<!--  clear: both;-->
-<!--  display: table;-->
-<!--}-->
-<!--</style>-->

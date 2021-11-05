@@ -33,9 +33,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref, onMounted } from 'vue'
 import Mindmap from '../Mindmap'
-
 type checkbox = { [key: string]: { value: boolean, disabled?: boolean } }
 
 export default defineComponent({
@@ -44,46 +43,54 @@ export default defineComponent({
     Mindmap
   },
   props: ['tree'],
-  data() {
-    return {
-      renderComponent: false,
-      dataJson: [],
-      center: true ,
-      fit:true,
-      timetravel:true,
-      download:true,
-      addNode:true ,
-      zoom:true,
-      drag: true,
-      edit:true ,
-      contextmenu:true,
-      sharp: false,
-      dataM: '',
-    }
-  },
-  methods: {
-    updateMap() {
-      this.renderComponent = false;
-      this.renderComponent = true;
-    },
-    scrollToTop() {
-      window.scrollTo(0,0);
-    }
-  },
-  mounted() {
-    this.dataM = this.tree;
-    this.renderComponent=true;
-    this.scrollToTop();
-  },
-  setup () {
+  setup (props) {
+    const renderComponent = ref(false);
+    const dataJson = reactive([]);
+    const center = ref(true);
+    const fit = ref(true);
+    const timetravel = ref(true);
+    const download = ref(true);
+    const addNode = ref(true);
+    const zoom = ref(true);
+    const drag = ref(true);
+    const edit = ref(true);
+    const contextmenu = ref(true);
+    const sharp = ref(false);
+    const dataM = ref('');
+
     const rangeList = reactive({
       branch: { value: 4, min: 1, max: 6 },
       'x-gap': { value: 84, min: 0, max: 100 },
       'y-gap': { value: 18, min: 0, max: 100 }
-    })
+    });
+
+    function scrollToTop() {
+      window.scrollTo(0,0);
+    }
+
+    function init() {
+      dataM.value = props.tree;
+      renderComponent.value=true;
+      scrollToTop();
+    }
+
+    onMounted(init)
 
     return {
-      rangeList
+      renderComponent,
+      dataJson,
+      center,
+      fit,
+      timetravel,
+      download,
+      addNode,
+      zoom,
+      drag,
+      edit,
+      contextmenu,
+      sharp,
+      dataM,
+      rangeList,
     }
   }
 })
@@ -99,6 +106,7 @@ export default defineComponent({
   height: 80vh;
   margin-left: -96px;
 }
+
 .container {
   width: 100%;
   height: 100vh;
@@ -165,13 +173,18 @@ input:disabled {
   cursor: not-allowed;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 986px) {
   .inline {
-    width: 50%;
+    width: 100%;
     padding-top:20px;
     padding-bottom:20px;
     float:left;
     padding-left: 10%;
+  }
+
+  .editor {
+
+    margin-left: -48px;
   }
 
 }
