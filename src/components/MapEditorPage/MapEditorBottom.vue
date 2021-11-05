@@ -129,7 +129,7 @@ body {
 @media only screen and (max-width: 986px) {
   .hero-action {
     margin: 1.5rem auto;
-    width: 100%!important;
+    width: 100%;
   }
 }
 

@@ -45,7 +45,6 @@ export default defineComponent({
   props: ['tree'],
   setup (props) {
     const renderComponent = ref(false);
-    const dataJson = reactive([]);
     const center = ref(true);
     const fit = ref(true);
     const timetravel = ref(true);
@@ -78,7 +77,6 @@ export default defineComponent({
 
     return {
       renderComponent,
-      dataJson,
       center,
       fit,
       timetravel,
@@ -183,7 +181,6 @@ input:disabled {
   }
 
   .editor {
-
     margin-left: -48px;
   }
 
