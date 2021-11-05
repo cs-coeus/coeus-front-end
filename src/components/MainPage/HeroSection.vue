@@ -18,30 +18,107 @@
       <div class="hero-copy">
         <h1>Generate your Mind Map from any text and files</h1>
         <h2>
-          With neural network, keywords are extracted and organized into mind map
+          With neural network, keywords are extractedand organized into mind map
           with ease.
         </h2>
       </div>
-      <input-form @generate-map="generateMap"></input-form>
+      <div class="hero-action" @dragover="dragover" @dragleave="dragleave" @drop="drop">
+        <input type="file" name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
+               class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf, .doc, .docx, .txt"  style="display: none"/>
+        <div v-if="!isDragged">
+          <label>{{ filelist.length === 0 ? 'Wikipedia URL' : 'Topic' }}</label>
+          <input
+            type="text"
+            placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
+            v-model="url" v-if="filelist.length === 0"
+          />
+          <input
+            type="text"
+            placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
+            v-model="url" v-else
+          />
+          <p v-if="filelist.length === 0">
+            or <link-button @click="chooseFiles()">Upload a file</link-button> (.pdf, .doc, .docx, .txt)
+          </p>
+          <p v-else>
+            {{filelist[0].name}} <link-button @click="removeFile()">remove</link-button>
+          </p>
+          <primary-button class="hero-cta" @click="generateMap">Generate</primary-button>
+        </div>
+        <div v-else>
+          <label>Drop file here!</label>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
 import HeroImage from "../../assets/images/HeroImage.svg";
-import InputForm from '@/components/UI/InputForm.vue';
+import PrimaryButton from '@/components/UI/PrimaryButton.vue';
+import LinkButton from '@/components/UI/LinkButton.vue';
 
 export default {
   name: "HeroSection",
-  components: {InputForm},
+  components: {
+    LinkButton,
+    PrimaryButton,
+  },
+  delimiters: ['${', '}'],
   emits: ['generate-map'],
-  setup(__, {emit}) {
-    function generateMap(event) {
-      emit('generate-map', event);
+  setup(__,{emit}) {
+    const url = ref('');
+    const filelist = ref([]);
+    const isDragged = ref(false);
+
+    function removeFile() {
+      filelist.value.splice(0);
     }
+
+    function chooseFiles() {
+      document.getElementById("assetsFieldHandle").click()
+    }
+
+    function generateMap() {
+      emit('generate-map', {
+        'url':url.value,
+        'fileList': filelist.value,
+      });
+    }
+
     return {
       HeroImage,
-      generateMap
+      url,
+      filelist,
+      isDragged,
+      removeFile,
+      chooseFiles,
+      generateMap,
+    };
+  },
+  methods: {
+    onChange() {
+      this.filelist = [...this.$refs.file.files];
+    },
+    remove(i) {
+      this.filelist.splice(i, 1);
+    },
+    dragover(event) {
+      event.preventDefault();
+      this.isDragged = true;
+    },
+    dragleave(event) {
+      this.isDragged = false;
+    },
+    drop(event) {
+      event.preventDefault();
+      this.isDragged = true;
+      this.$refs.file.files = event.dataTransfer.files;
+      this.onChange();
+      // add generate method
+      // Clean up
+      this.isDragged = false;
     }
   }
 };
@@ -74,6 +151,41 @@ export default {
   margin-top: 36px;
   font-size: 1.5rem;
   font-weight: normal;
+}
+
+.hero-action {
+  position: relative;
+  padding: 24px;
+  margin-top: 32px;
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px 0 var(--black-a15);
+  width: 50%;
+}
+
+.hero-action label {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.hero-action  input {
+  margin-top: 8px;
+  width: 100%;
+  border: 1px solid var(--black-a20);
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.hero-action  p {
+  color: var(--grey);
+  margin-top: 8px;
+}
+
+.hero-cta {
+  font-size: 1.25rem;
+  position: absolute;
+  bottom: -16px;
+  right: -16px;
 }
 
 .shape {
@@ -123,6 +235,14 @@ export default {
     width: 100%;
   }
 
+  .hero-action {
+    margin: 1.5rem auto;
+    width: 100%;
+  }
+
+  .hero-cta {
+    bottom: -20%;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -134,7 +254,7 @@ export default {
     font-size: 1rem;
   }
 
-  .hero-wrapper {
+  .hero-wrapper .hero-action {
     margin-top: 16px;
   }
 }
