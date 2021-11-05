@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <mindmap
       class="left-bottom editor"
       v-if="renderComponent"
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import Mindmap from '../../Mindmap'
+import Mindmap from '../Mindmap'
 
 type checkbox = { [key: string]: { value: boolean, disabled?: boolean } }
 
@@ -97,6 +97,7 @@ export default defineComponent({
   top:5px;
   width: 100vw;
   height: 80vh;
+  margin-left: -96px;
 }
 .container {
   width: 100%;
@@ -164,7 +165,7 @@ input:disabled {
   cursor: not-allowed;
 }
 
-@media only screen and (max-width: 798px) {
+@media only screen and (max-width: 900px) {
   .inline {
     width: 50%;
     padding-top:20px;

@@ -11,7 +11,7 @@ export default defineConfig({
     ]
   },
   plugins: [vue()],
-  base: '/mind-map-viewer-frontend/',
+  base: '/coeus-front-end/',
   css: {
     modules: {
       generateScopedName: (name, filename, css) => {
