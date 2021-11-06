@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+RUN rm vite.config.ts
+ADD vite.config.prod.ts vite.config.ts
 RUN node node_modules/esbuild/install.js
 RUN npm run build
 
