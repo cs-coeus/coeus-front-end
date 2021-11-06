@@ -18,7 +18,7 @@
       <div class="hero-copy">
         <h1>Generate your Mind Map from any text and files</h1>
         <h2>
-          With neural network, keywords are extractedand organized into mind map
+          With neural network, keywords are extracted and organized into mind map
           with ease.
         </h2>
       </div>
@@ -34,7 +34,7 @@
           />
           <input
             type="text"
-            placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
+            placeholder="E.g. KMUTT, Rice"
             v-model="url" v-else
           />
           <p v-if="filelist.length === 0">
@@ -87,6 +87,23 @@ export default {
       });
     }
 
+    function onChange() {
+      this.filelist = [...this.$refs.file.files];
+    }
+
+    function remove(i) {
+      filelist.value.splice(i, 1);
+    }
+
+    function dragover(event) {
+      event.preventDefault();
+      isDragged.value = true;
+    }
+
+    function dragleave(event) {
+      isDragged.value = false;
+    }
+
     return {
       HeroImage,
       url,
@@ -95,22 +112,13 @@ export default {
       removeFile,
       chooseFiles,
       generateMap,
+      onChange,
+      remove,
+      dragover,
+      dragleave,
     };
   },
   methods: {
-    onChange() {
-      this.filelist = [...this.$refs.file.files];
-    },
-    remove(i) {
-      this.filelist.splice(i, 1);
-    },
-    dragover(event) {
-      event.preventDefault();
-      this.isDragged = true;
-    },
-    dragleave(event) {
-      this.isDragged = false;
-    },
     drop(event) {
       event.preventDefault();
       this.isDragged = true;
