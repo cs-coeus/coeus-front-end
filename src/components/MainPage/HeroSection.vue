@@ -18,7 +18,7 @@
       <div class="hero-copy">
         <h1>Generate your Mind Map from any text and files</h1>
         <h2>
-          With neural network, keywords are extractedand organized into mind map
+          With neural network, keywords are extracted and organized into mind map
           with ease.
         </h2>
       </div>
@@ -34,7 +34,7 @@
           />
           <input
             type="text"
-            placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
+            placeholder="E.g. KMUTT, Rice"
             v-model="url" v-else
           />
           <p v-if="filelist.length === 0">
