@@ -11,7 +11,7 @@ export default defineConfig({
     ]
   },
   plugins: [vue()],
-  base: '/coeus-front-end/',
+  base: '/',
   css: {
     modules: {
       generateScopedName: (name, filename, css) => {
