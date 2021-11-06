@@ -45,6 +45,10 @@ export default defineComponent({
   props: ['tree'],
   setup (props) {
     const renderComponent = ref(false);
+<<<<<<< HEAD
+=======
+    const dataJson = reactive([]);
+>>>>>>> 41b4715 (feat: refactor mapEditor to composed API, fix styling)
     const center = ref(true);
     const fit = ref(true);
     const timetravel = ref(true);
@@ -77,6 +81,10 @@ export default defineComponent({
 
     return {
       renderComponent,
+<<<<<<< HEAD
+=======
+      dataJson,
+>>>>>>> 41b4715 (feat: refactor mapEditor to composed API, fix styling)
       center,
       fit,
       timetravel,
