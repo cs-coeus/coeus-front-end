@@ -87,6 +87,23 @@ export default {
       });
     }
 
+    function onChange() {
+      this.filelist = [...this.$refs.file.files];
+    }
+
+    function remove(i) {
+      filelist.value.splice(i, 1);
+    }
+
+    function dragover(event) {
+      event.preventDefault();
+      isDragged.value = true;
+    }
+
+    function dragleave(event) {
+      isDragged.value = false;
+    }
+
     return {
       HeroImage,
       url,
@@ -95,22 +112,13 @@ export default {
       removeFile,
       chooseFiles,
       generateMap,
+      onChange,
+      remove,
+      dragover,
+      dragleave,
     };
   },
   methods: {
-    onChange() {
-      this.filelist = [...this.$refs.file.files];
-    },
-    remove(i) {
-      this.filelist.splice(i, 1);
-    },
-    dragover(event) {
-      event.preventDefault();
-      this.isDragged = true;
-    },
-    dragleave(event) {
-      this.isDragged = false;
-    },
     drop(event) {
       event.preventDefault();
       this.isDragged = true;
