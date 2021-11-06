@@ -27,7 +27,7 @@
 		<div class="left-container">
 			<li class="navigation-item logo" @click="$emit('go-home')" >COEUS</li>
 		</div>
-		<div class="right-container">
+		<div class="right-container" v-if="isHome">
 			<hamburger-menu />
 		</div>
 	</nav>

@@ -8,13 +8,8 @@
         <label>{{ filelist.length === 0 ? 'Wikipedia URL' : 'Topic' }}</label>
         <input
           type="text"
-          placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
-          v-model="url" v-if="filelist.length === 0"
-        />
-        <input
-          type="text"
-          placeholder="E.g. https://en.wikipedia.org/wiki/Coeus"
-          v-model="url" v-else
+          :placeholder="filelist.length === 0 ? 'E.g. https://en.wikipedia.org/wiki/Coeus' : 'E.g. KMUTT, Rice'"
+          v-model="url"
         />
         <p v-if="filelist.length === 0">
           or <link-button @click="chooseFiles()">Upload a file</link-button> (.pdf, .doc, .docx, .txt)
