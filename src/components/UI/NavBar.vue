@@ -132,11 +132,9 @@ export default {
 		justify-content: space-between;
 		position: fixed;
 		z-index: 1;
-		padding: 16px 0;
-		margin-left: -48px;
-		padding-left: 48px;
-		padding-right: 48px;
-	}
+    margin-left: -48px;
+    padding: 16px 48px;
+  }
 
 	.mobile-menu.toggle-background {
 		background-color: var(--white);

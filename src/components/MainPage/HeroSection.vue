@@ -133,9 +133,5 @@ export default {
   .hero-wrapper .hero-copy h2 {
     font-size: 1rem;
   }
-
-  .hero-wrapper {
-    margin-top: 16px;
-  }
 }
 </style>
