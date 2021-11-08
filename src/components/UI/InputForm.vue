@@ -3,17 +3,25 @@
     <input type="file" name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
            class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf, .doc, .docx, .txt"  style="display: none"/>
     <div v-if="!isDragged">
-      <label>{{ filelist.length === 0 ? 'Wikipedia URL' : 'Topic' }}</label>
+      <label>{{ semiStructure ? 'Wikipedia URL' : 'Title' }}</label>
+      <div class="float-right"> Unstructured
+        <label class="switch">
+          <input type="checkbox" v-model="semiStructure">
+          <span class="slider round"></span>
+        </label>
+        Semi-structured
+      </div>
       <input
         type="text"
-        :placeholder="filelist.length === 0 ? 'E.g. https://en.wikipedia.org/wiki/Coeus' : 'E.g. KMUTT, Rice'"
+        :placeholder="semiStructure ? 'E.g. https://en.wikipedia.org/wiki/Coeus' : 'E.g. KMUTT, Rice'"
         v-model="url"
       />
-      <p v-if="filelist.length === 0">
+      <p v-if="!semiStructure && !filelist.length">
         or <link-button @click="chooseFiles()">Upload a file</link-button> (.pdf, .doc, .docx, .txt)
       </p>
-      <p v-else>
-        {{filelist[0].name}} <link-button @click="removeFile()">remove</link-button>
+      <p v-if="semiStructure">&nbsp;&nbsp;</p>
+      <p v-if="!semiStructure && filelist.length">
+        {{filelist[0].name}} <link-button @click="removeFile()">Remove</link-button>
       </p>
       <primary-button class="hero-cta" @click="generateMap">Generate</primary-button>
     </div>
@@ -38,6 +46,7 @@ export default {
   delimiters: ['${', '}'],
   emits: ['generate-map'],
   setup(__,{emit}) {
+    const semiStructure = ref(true)
     const url = ref('');
     const filelist = ref([]);
     const isDragged = ref(false);
@@ -52,9 +61,10 @@ export default {
     }
 
     function generateMap() {
+      let file = semiStructure.value ? '' : filelist.value;
       emit('generate-map', {
         'url':url.value,
-        'fileList': filelist.value,
+        'fileList': file,
       });
     }
 
@@ -90,6 +100,7 @@ export default {
       url,
       filelist,
       isDragged,
+      semiStructure,
       removeFile,
       chooseFiles,
       generateMap,
@@ -104,6 +115,12 @@ export default {
 </script>
 
 <style scoped>
+
+.float-right {
+  float: right;
+  padding-bottom: 8px;
+  padding-right: 2px;
+}
 .hero-action {
   position: relative;
   padding: 24px;
@@ -137,6 +154,66 @@ export default {
   position: absolute;
   bottom: -16px;
   right: -16px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 25px;
+  margin-right: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input + .slider {
+  background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 @media only screen and (max-width: 986px) {
