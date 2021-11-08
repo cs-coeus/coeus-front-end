@@ -13,7 +13,7 @@
         </section>
         <menu v-if="!fixed">
           <slot name="actions">
-            <base-button @click="tryClose">Close</base-button>
+            <primary-button @click="tryClose">Close</primary-button>
           </slot>
         </menu>
       </dialog>
@@ -22,7 +22,9 @@
 </template>
 
 <script>
+import PrimaryButton from '@/components/UI/PrimaryButton.vue';
 export default {
+  components: {PrimaryButton},
   props: {
     show: {
       type: Boolean,
