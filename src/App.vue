@@ -25,8 +25,8 @@
     <footer-section></footer-section>
   </div>
 </template>
-<script>
-
+<script lang="ts">
+import {ref} from 'vue';
 import MapEditor from "@/components/MapEditorPage/MapEditor.vue";
 import MapEditorBottom from '@/components/MapEditorPage/MapEditorBottom.vue';
 import arrayToTree from 'array-to-tree';
@@ -54,30 +54,86 @@ export default {
     MapEditorBottom,
     MapEditor
   },
-  data() {
-    return {
-      isHome: true,
-      info: "{}",
-      formatted: [],
-      error: null,
-      isLoading: false,
+  setup() {
+    const isHome = ref(true)
+    const info = ref("")
+    const formatted = ref([])
+    const error = ref(null)
+    const isLoading = ref(false)
+
+    function goHome() {
+      isHome.value = true;
     }
-  },
-  methods: {
-    goHome() {
-      this.isHome = true;
-    },
-    async generateMap(event) {
-      this.isHome = true;
-      this.isLoading = true;
+
+    function handleError() {
+      error.value = null;
+    }
+
+    async function generateMap(event) {
+      isHome.value = true;
+      isLoading.value = true;
       try {
-        await this.requestData(event);
+        await requestData(event);
       } catch (err) {
-        this.error = err.message || 'failed to generate mind map';
+        error.value = err.message || 'failed to generate mind map';
       }
-      this.isLoading = false;
-    },
-    async requestData(event) {
+      isLoading.value = false;
+    }
+
+    function format() {
+      if(info.value!=="") {
+        //JSONifiction
+        let list = JSON.parse(info.value.toString())
+        //check if contain edges and nodes keys
+        if("edges" in list && "nodes" in list) {
+          //merge edges and nodes
+          let merged = [];
+          for(let i=0; i<list.nodes.length; i++) {
+            list.nodes[i].name = list.nodes[i]['text'];
+            merged.push({
+              ...list.nodes[i],
+              ...(list.edges.find((itmInner) => itmInner.childId === list.nodes[i].id))},
+            );
+          }
+          //check if left or right side of root
+          let leftright = 0;
+          for(let i=0; i<merged.length; i++) {
+            merged[i].left = (merged[i].parentId === 1 && ++leftright % 2 === 0);
+          }
+          //convert array version to tree
+          let tree = arrayToTree(merged, {
+            parentProperty: 'parentId',
+            customID: 'id'
+          });
+          //tree pruning - takes longer time
+          tree = removeProp(tree, "id")
+          tree = removeProp(tree, "text")
+          tree = removeProp(tree, "parentId")
+
+          formatted.value = JSON.parse(JSON.stringify(tree));
+          isHome.value = false;
+        }
+      } else {
+        throw new Error('There was some error');
+      }
+    }
+
+    function removeProp(obj, propToDelete) {
+      for (var property in obj) {
+        if (typeof obj[property] == "object") {
+          delete obj.property
+          let newJsonData = removeProp(obj[property], propToDelete);
+          obj[property]= newJsonData
+        } else {
+          if (property === propToDelete) {
+            delete obj[property];
+          }
+        }
+      }
+      return obj
+    }
+
+    async function requestData(event) {
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSSBBTSBBVVRIRU5USUNBVEVEISBzdGZnQXM4S3VDMmZOUVJ1ckhkVmFjQUFjTW1VQXJRcSJ9._ft_CMR27CE8ySY55KiH34uWnFJmdaLoCH8XYBFqWmQ';
       let url = null;
       let body = null;
@@ -103,7 +159,7 @@ export default {
 
         let wiki_path = event.url;
         if(event.url.includes('wikipedia.org/')) {
-            wiki_path = event.url.split('/').slice(-1)[0];
+          wiki_path = event.url.split('/').slice(-1)[0];
         }
         url = 'http://coeus.sit.kmutt.ac.th/api/main/predict/semi-structured';
         header['Content-Type'] = 'application/json';
@@ -123,66 +179,22 @@ export default {
       if (!response.ok) {
         throw new Error(responseData.message || 'failed to fetch');
       } else {
-        this.info = JSON.stringify(responseData.result);
-        this.format();
+        info.value = JSON.stringify(responseData.result);
+        format();
       }
-
-    },
-    format() {
-      if(this.info!=="") {
-        //JSONifiction
-        let list = JSON.parse(this.info.toString())
-        //check if contain edges and nodes keys
-        if("edges" in list && "nodes" in list) {
-          //merge edges and nodes
-          let merged = [];
-          for(let i=0; i<list.nodes.length; i++) {
-            list.nodes[i].name = list.nodes[i]['text'];
-            merged.push({
-              ...list.nodes[i],
-              ...(list.edges.find((itmInner) => itmInner.childId === list.nodes[i].id))},
-            );
-          }
-          //check if left or right side of root
-          let leftright = 0;
-          for(let i=0; i<merged.length; i++) {
-            merged[i].left = (merged[i].parentId === 1 && ++leftright % 2 === 0);
-          }
-          //convert array version to tree
-          let tree = arrayToTree(merged, {
-            parentProperty: 'parentId',
-            customID: 'id'
-          });
-          //tree pruning - takes longer time
-          tree = this.removeProp(tree, "id")
-          tree = this.removeProp(tree, "text")
-          tree = this.removeProp(tree, "parentId")
-
-          this.formatted = JSON.parse(JSON.stringify(tree));
-          this.isHome = false;
-        }
-      } else {
-        throw new Error('There was some error');
-      }
-    },
-    removeProp(obj, propToDelete) {
-      for (var property in obj) {
-        if (typeof obj[property] == "object") {
-          delete obj.property
-          let newJsonData = this.removeProp(obj[property], propToDelete);
-          obj[property]= newJsonData
-        } else {
-          if (property === propToDelete) {
-            delete obj[property];
-          }
-        }
-      }
-      return obj
-    },
-    handleError() {
-      this.error = null;
     }
-  }
+
+    return {
+      isHome,
+      info,
+      formatted,
+      error,
+      isLoading,
+      goHome,
+      handleError,
+      generateMap
+    }
+  },
 }
 </script>
 <style scoped>
