@@ -28,12 +28,6 @@ h1 {
 }
 
 .hero-action {
-  position: relative;
-  padding: 24px;
-  background-color: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px 0 var(--black-a15);
-  width: 50%;
   margin: auto;
 }
 
