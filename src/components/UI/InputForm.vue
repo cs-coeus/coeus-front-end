@@ -3,7 +3,7 @@
     <input type="file" name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
            class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf, .doc, .docx, .txt"  style="display: none"/>
     <div v-if="!isDragged">
-      <label>{{ semiStructure ? 'Wikipedia URL' : 'Topic' }}</label>
+      <label>{{ semiStructure ? 'Wikipedia URL' : 'Title' }}</label>
       <div class="float-right"> Unstructured
         <label class="switch">
           <input type="checkbox" v-model="semiStructure">
@@ -21,7 +21,7 @@
       </p>
       <p v-if="semiStructure">&nbsp;&nbsp;</p>
       <p v-if="!semiStructure && filelist.length">
-        {{filelist[0].name}} <link-button @click="removeFile()">remove</link-button>
+        {{filelist[0].name}} <link-button @click="removeFile()">REMOVE</link-button>
       </p>
       <primary-button class="hero-cta" @click="generateMap">Generate</primary-button>
     </div>
