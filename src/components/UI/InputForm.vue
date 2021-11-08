@@ -21,7 +21,7 @@
       </p>
       <p v-if="semiStructure">&nbsp;&nbsp;</p>
       <p v-if="!semiStructure && filelist.length">
-        {{filelist[0].name}} <link-button @click="removeFile()">REMOVE</link-button>
+        {{filelist[0].name}} <link-button @click="removeFile()">Remove</link-button>
       </p>
       <primary-button class="hero-cta" @click="generateMap">Generate</primary-button>
     </div>
